@@ -1,7 +1,12 @@
 import { IUser } from "@/types/user.types"
-import mongoose, { mongo } from "mongoose"
+import mongoose, { Document, mongo } from "mongoose"
 import bcrypt from "bcrypt"
-const userSchema = new mongoose.Schema<IUser>({
+
+interface UserDocument extends Omit<IUser , "_id">, Document {
+    comparePassword(candidatePassword : string):boolean
+}
+
+const userSchema = new mongoose.Schema<UserDocument>({
     name:{
         type:String,
         trim:true,
@@ -18,7 +23,7 @@ const userSchema = new mongoose.Schema<IUser>({
         trim:true,
         required:[true, "Password is required"]
     },
-    number:{
+    mobile:{
         type:String,
     }
 },{timestamps:true})
@@ -31,8 +36,8 @@ userSchema.pre("save", function(){
     this.password = bcrypt.hashSync(this.password, 7)
 })
 
-userSchema.methods.comparPassword = function(candiatePassword:string):boolean{
-    return bcrypt.compareSync(candiatePassword, this.password)
+userSchema.methods.comparPassword = function(candidatePassword:string):boolean{
+    return bcrypt.compareSync(candidatePassword, this.password)
 }
 
 

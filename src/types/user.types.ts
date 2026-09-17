@@ -5,7 +5,7 @@ export interface IUser  {
     name:string,
     email:string,
     password:string,
-    number:string,
+    mobile:string,
     createdAt?:Date,
     updatedAt?:Date
     
@@ -15,7 +15,7 @@ export interface RegisterBody {
     name:string,
     email:string,
     password:string,
-    number:string
+    mobile:string
 }
 
 export interface LoginBody {
@@ -24,6 +24,6 @@ export interface LoginBody {
 }
 
 export interface JwtPayload{
-    id:string,
+    userId:string,
     email?:string
 }
